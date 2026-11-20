@@ -8,9 +8,9 @@ def qualify_head_positions(first_coverage, second_coverage, request):
     if request.rail_right - request.rail_left < request.width:
         return ()
     half_width = request.width / 2
+    union = tuple(first_coverage.polygons) + tuple(second_coverage.polygons)
     return merge_closed_intervals(
         ClosedInterval(span.left + half_width, span.right - half_width)
-        for coverage in (first_coverage, second_coverage)
-        for span in full_height_spans(coverage.polygons, request)
+        for span in full_height_spans(union, request)
         if span.right - span.left >= request.width
     )
